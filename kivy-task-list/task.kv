@@ -1,0 +1,102 @@
+#:import Factory kivy.factory.Factory
+#:set color_high (1, .2, .2, 1)  # dark red
+#:set color_medium (1, 1, .2, 1)  # dark yellow
+#:set color_low   (.2, 1, .2, 1)  # dark green
+#:set color_nothing   (.2, .3, .4, 1)  # darkest blue
+
+<ScreenLayout@BoxLayout>
+    orientation:'vertical'
+    task_manager: task_manager
+    spacing: 5
+    padding: 5
+    BoxLayout:
+        size: 0, 50
+        size_hint_y:None
+        Label:
+            size_hint_x: 3
+            text: 'Remove'
+            color: 1,1,1,1
+            size_hint_x: .4
+        Label:
+            size_hint_x: 3
+            text: 'Task'
+            color: 1,1,1,1
+        Label:
+            size_hint_x: 1
+            text: 'When'
+        Label:
+            size_hint_x: 1
+            text: 'Priority'
+        Label:
+            size_hint_x: 3
+            text: 'Done'
+            color: 1,1,1,1
+            size_hint_x: .4
+    ScrollView:
+        size: self.size
+        TaskManager:
+            id: task_manager
+            size_hint: 1, None
+    AnchorLayout:
+        anchor:'center'
+        size: 0, 50
+        size_hint_y:None
+        Button:
+            size_hint_x: None
+            size: 150, 50
+            text: 'Add task'
+            on_press: root.add_task()
+
+<TaskManager@BoxLayout>:
+    orientation: 'vertical'
+    spacing: 5
+
+
+<PrioritySpinnerOption@SpinnerOption>:
+    background_color: color_high if self.text == 'High' else color_medium if self.text == "Medium" else color_low if self.text == "Low" else color_nothing
+
+<TaskWidget@BoxLayout>:
+    spacing: 5
+    orientation: 'horizontal'
+    task:task
+    when:when
+    priority:priority
+    done:done
+    size_hint_y: None
+    size: 0, 50
+    pos_hint_x: .5
+    pos_hint_y: .5
+    AnchorLayout:
+        size_hint_x: .4
+        anchor: 'center'
+        Button:
+            size_hint: None, None
+            size: self.parent.size[0]/2, self.parent.size[1]/2
+            on_press: root.remove_task()
+            canvas.after:
+                Color:
+                    rgb: .7, .7, .7
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+    TextInput:
+        write_tab: False
+        id: task
+        size_hint_x: 3
+    TextInput:
+        write_tab: False
+        id: when
+        size_hint_x: 1
+    Spinner:
+        option_cls: Factory.get("PrioritySpinnerOption")
+        id: priority
+        size_hint_x: 1
+        values: 'High', 'Medium', 'Low'
+        value:''
+        text:''
+        background_color: root.priority_color
+        on_text: root.change_priority(self.text)
+    CheckBox:
+        id:done
+        size_hint_x: .4
+        on_release: root.check_box_change()

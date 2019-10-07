@@ -1,0 +1,105 @@
+#:kivy 1.0.9
+#:import random random.random
+
+<CalcWidget@BoxLayout>:
+    visor: visor
+    hue: random()
+    size: 100, 100
+    BoxLayout:
+        padding: 10
+        orientation: 'vertical'
+        spacing: 5
+        TextInput:
+            id: visor
+            size_hint_y: .2
+            size: 10, 10
+            color: 'black'
+            font_size: 30
+            canvas.after:
+                Color:
+                    rgba: 1,0,0, self.parent.parent.error_led
+                Ellipse:
+                    pos: self.pos[0] + self.width - 22, self.pos[1] + 2
+                    size: 20, 20
+                Color:
+                    rgba: 1,1,1,1-self.parent.parent.error_led
+
+        BoxLayout:
+            size_hint_y: .8
+            orientation: 'horizontal'
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 5
+                padding: 0, 0, 2, 0
+                Button:
+                    size_hint_y: .5
+                    on_press: root.button_press(self)
+                    text:"CE"
+                Button:
+                    on_press: root.button_press(self)
+                    text:"7"
+                Button:
+                    text:"4"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"1"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"0"
+                    on_press: root.button_press(self)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 5
+                padding: 2, 0, 2, 0
+                Button:
+                    size_hint_y: .5
+                    on_press: root.button_press(self)
+                    text:"/"
+                Button:
+                    text:"8"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"5"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"2"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"."
+                    on_press: root.button_press(self)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 5
+                padding: 2, 0, 2, 0
+                Button:
+                    size_hint_y: .5
+                    on_press: root.button_press(self)
+                    text:"*"
+                Button:
+                    text:"9"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"6"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"3"
+                    on_press: root.button_press(self)
+                Button:
+                    text:"M+"
+                    on_press: root.button_press(self)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 5
+                padding: 2, 0, 0, 0
+                Button:
+                    size_hint_y: 1
+                    on_press: root.button_press(self)
+                    text:"-"
+                Button:
+                    size_hint_y: 3
+                    text:"+"
+                    on_press: root.button_press(self)
+                Button:
+                    size_hint_y: 3
+                    text:"Enter"
+                    on_press: root.button_press(self)
